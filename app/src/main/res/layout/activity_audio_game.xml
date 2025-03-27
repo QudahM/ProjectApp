@@ -109,4 +109,37 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="130dp" />
 
+    <!-- Correct Answers Text -->
+    <TextView
+        android:id="@+id/correct_answers_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correct Answers: 0"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:layout_below="@id/btn_bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <!-- Reaction Time Text -->
+    <TextView
+        android:id="@+id/reaction_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reaction Time: 0 ms"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:layout_below="@id/correct_answers_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <!-- Feedback Image (Checkmark or X) -->
+    <ImageView
+        android:id="@+id/feedback_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/reaction_time_text"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
 </RelativeLayout>
