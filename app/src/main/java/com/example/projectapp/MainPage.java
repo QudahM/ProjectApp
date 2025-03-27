@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projectapp.GameLogic.AudioGameActivity;
+
 public class MainPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +22,7 @@ public class MainPage extends AppCompatActivity {
         soundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainPage.this, SoundTestActivity.class);
+                Intent intent = new Intent(MainPage.this, AudioGameActivity.class);
                 startActivity(intent);
             }
         });

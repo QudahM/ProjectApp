@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- Sound Test Label -->
+    <TextView
+        android:id="@+id/text_sound_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sound\nTest"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="120dp"
+        android:gravity="start" />
+
+    <!-- Score Label -->
+    <TextView
+        android:id="@+id/text_score_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score:"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="120dp" />
+
+    <!-- Score Counter -->
+    <TextView
+        android:id="@+id/text_score_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_alignBaseline="@id/text_score_label"
+        android:layout_toEndOf="@id/text_score_label"
+        android:layout_marginStart="10dp" />
+
+    <!-- Level Label -->
+    <TextView
+        android:id="@+id/text_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Level 1"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_centerInParent="true" />
+
+    <!-- Top Button -->
+    <Button
+        android:id="@+id/btn_top"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="TOP"
+        android:textSize="18sp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="#FFFFFF"
+        android:layout_above="@id/text_level"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="130dp" />
+
+    <!-- Left Button -->
+    <Button
+        android:id="@+id/btn_left"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="LEFT"
+        android:textSize="18sp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="#FFFFFF"
+        android:layout_toStartOf="@id/text_level"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="50dp" />
+
+    <!-- Right Button -->
+    <Button
+        android:id="@+id/btn_right"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="RIGHT"
+        android:textSize="18sp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="#FFFFFF"
+        android:layout_toEndOf="@id/text_level"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="50dp" />
+
+    <!-- Bottom Button -->
+    <Button
+        android:id="@+id/btn_bottom"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="BOTTOM"
+        android:textSize="18sp"
+        android:backgroundTint="@color/teal_700"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/text_level"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp" />
+
+</RelativeLayout>
