@@ -13,7 +13,7 @@ public class gamehelper {
     public void showGameResults(boolean isSuccess, int correctAnswers, long totalReactionTime, Runnable restartCallback) {
         long averageReactionTime = (correctAnswers > 0) ? totalReactionTime / correctAnswers : 0;
         String resultMessage = isSuccess
-                ? "You finished the game with " + correctAnswers + "/10 correct answers!\nAverage Reaction Time: " + averageReactionTime + " ms"
+                ? "You finished the game with " + correctAnswers + "/15 correct answers!\nAverage Reaction Time: " + averageReactionTime + " ms"
                 : "Game Over due to too many mistakes!";
 
         new AlertDialog.Builder(activity)
