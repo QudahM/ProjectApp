@@ -18,9 +18,9 @@ public class SightTestActivity extends AppCompatActivity {
     private ImageView directionImage;
     private long startTime,endTime;
     private gamehelper helper;
-    private int correctAnswers,counter;
+    private int correctAnswers,counter,counterscore,missedDirections,level,questionsasnwered;;
     private long totalReactionTime,delay;
-    private int missedDirections,level;
+
     private final String[] directions = {"UP", "LEFT", "RIGHT", "DOWN"};
     private String currentDirection = "";
     private Random random = new Random();
@@ -42,7 +42,7 @@ public class SightTestActivity extends AppCompatActivity {
 
         leveltext.setText("Level: "+level);
         correctAnswers=0;
-        score.setText(""+correctAnswers);
+        score.setText("Score: "+correctAnswers+"/"+counterscore);
         int difficulty = getIntent().getIntExtra("difficulty", 1);
         setdiff(difficulty);
         directionImage.setImageResource(R.drawable.wait);
@@ -104,27 +104,29 @@ public class SightTestActivity extends AppCompatActivity {
 
     private void checkAnswer(String userAnswer){
 
-
+        questionsasnwered++;
         if (userAnswer.equals(currentDirection)) {
             directionImage.setImageResource(R.drawable.check);
             correctAnswers++;
-            counter++;
             long reactionTime = System.currentTimeMillis() - startTime;
             totalReactionTime += reactionTime;
+            counterscore++;
             missedDirections = 0;
-            score.setText("Score: "+correctAnswers);
+            score.setText("Score: "+correctAnswers+"/"+counterscore);
 
             double seconds = reactionTime / 1000.0;
             String formattedTime = String.format("%.3f", seconds);
-
+            counter++;
             resultText.setText("Reaction Time: " + formattedTime + " seconds");
-            if (correctAnswers >= 5) {
+            if (counterscore >= 5) {
                 level++;
+                counterscore=0;
                 correctAnswers = 0;
                 leveltext.setText("Level: "+level);
-                score.setText("Score: "+correctAnswers);
+                score.setText("Score: "+correctAnswers+"/"+counterscore);
                 if (level>3){
-                    helper.showGameResults(true,counter,totalReactionTime,this::startGame);
+
+                    helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,this::startGame);
                     level =3;
                     correctAnswers = 0;
                     leveltext.setText("Level: "+level);
@@ -136,8 +138,7 @@ public class SightTestActivity extends AppCompatActivity {
 
             }
             if (level>3){
-                helper.showGameResults(true,counter,totalReactionTime,this::startGame);
-
+                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,this::startGame);
                 correctAnswers = 0;
                 leveltext.setText("Level: "+level);
                 score.setText("Score: "+correctAnswers);
@@ -150,7 +151,10 @@ public class SightTestActivity extends AppCompatActivity {
         } else {
             directionImage.setImageResource(R.drawable.cross);
             missedDirections++;
+            counterscore++;
+            score.setText("Score: "+correctAnswers+"/"+counterscore);
             handler.postDelayed(() -> startGame(), 1000);
+
         }
     }
 
