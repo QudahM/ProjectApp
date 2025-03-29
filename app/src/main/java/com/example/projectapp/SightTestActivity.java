@@ -91,6 +91,7 @@ public class SightTestActivity extends AppCompatActivity {
 
 
         if (userAnswer.equals(currentDirection)) {
+            directionImage.setImageResource(R.drawable.check);
             correctAnswers++;
             counter++;
             long reactionTime = System.currentTimeMillis() - startTime;
@@ -108,7 +109,7 @@ public class SightTestActivity extends AppCompatActivity {
 
                 leveltext.setText("Level: "+level);
                 score.setText("Score: "+correctAnswers);
-                handler.postDelayed(() -> startGame(), 500);
+                handler.postDelayed(() -> startGame(), 1000);
             }
             if (level==4){
                 helper.showGameResults(true,counter,totalReactionTime,this::startGame);
@@ -118,8 +119,9 @@ public class SightTestActivity extends AppCompatActivity {
                 score.setText("Score: "+correctAnswers);
 
             }
-            handler.postDelayed(() -> startGame(), 500);
+            handler.postDelayed(() -> startGame(), 1000);
         } else {
+            directionImage.setImageResource(R.drawable.cross);
             missedDirections++;
             handler.postDelayed(() -> startGame(), 1000);
         }
