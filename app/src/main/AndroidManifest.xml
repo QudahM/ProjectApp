@@ -32,11 +32,15 @@
 
         <activity
             android:name=".GameLogic.AudioGameActivity"
-        android:exported="false" />
+            android:exported="false" />
 
         <activity
             android:name=".SightTestActivity"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".DifficultySelectionActivity"
+            android:exported="false" />
 
     </application>
 

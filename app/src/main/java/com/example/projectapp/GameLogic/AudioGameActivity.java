@@ -1,5 +1,6 @@
 package com.example.projectapp.GameLogic;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,22 +15,27 @@ import java.util.Queue;
 
 public class AudioGameActivity extends AppCompatActivity {
 
-    private Queue<String> soundQueue = new LinkedList<>();  // Queue for sound directions to be played
-    private Queue<String> playerQueue = new LinkedList<>(); // Queue for directions the player should respond to
+    private Queue<String> soundQueue = new LinkedList<>();  // Queue for sound directions
+    private Queue<String> playerQueue = new LinkedList<>(); // Queue for expected player responses
     private int missedDirections = 0;
-    private final int MAX_MISSED = 10;  // Game ends after 10 mistakes
+    private final int MAX_MISSED = 10;
     private Handler handler = new Handler();
     private final String[] directions = {"TOP", "LEFT", "RIGHT", "BOTTOM"};
     private int correctAnswers = 0;
     private long totalReactionTime = 0;
     private long startTime = 0;
+    private long audioDelay = 1000; // Default 1 second delay
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_game);
 
-        // Initialize Buttons
+        // Get difficulty level from intent
+        int difficulty = getIntent().getIntExtra("difficulty", 1);
+        setAudioDelay(difficulty);
+
+        // Initialize buttons
         Button btnTop = findViewById(R.id.btn_top);
         Button btnLeft = findViewById(R.id.btn_left);
         Button btnRight = findViewById(R.id.btn_right);
@@ -38,46 +44,56 @@ public class AudioGameActivity extends AppCompatActivity {
         // Start the game
         startGame();
 
-        // Set OnClickListener for each button
+        // Set button click listeners
         btnTop.setOnClickListener(v -> checkAnswer("TOP"));
         btnLeft.setOnClickListener(v -> checkAnswer("LEFT"));
         btnRight.setOnClickListener(v -> checkAnswer("RIGHT"));
         btnBottom.setOnClickListener(v -> checkAnswer("BOTTOM"));
     }
 
+    private void setAudioDelay(int difficulty) {
+        switch (difficulty) {
+            case 1:
+                audioDelay = 3000; // 3 second
+                break;
+            case 2:
+                audioDelay = 1500; // 1.5 seconds
+                break;
+            case 3:
+                audioDelay = 750; // 0.75 seconds
+                break;
+            default:
+                audioDelay = 1000; // Default to 1 second
+        }
+    }
+
     private void startGame() {
-        // Clear any previous queues
         soundQueue.clear();
         playerQueue.clear();
 
-        // Shuffle and add 10 random directions to the soundQueue
+        // Add 10 random directions to the sound queue
         for (int i = 0; i < 10; i++) {
-            // Randomly select a direction
             int randomIndex = (int) (Math.random() * directions.length);
-            String randomDirection = directions[randomIndex];
-            soundQueue.add(randomDirection);
+            soundQueue.add(directions[randomIndex]);
         }
 
-        // Start playing directions at 1-second intervals
+        // Start playing directions
         playNextDirection();
     }
 
     private void playNextDirection() {
         if (!soundQueue.isEmpty()) {
-            // Pop the direction from the soundQueue and push it to the playerQueue
-            String direction = soundQueue.poll();  // Pop from soundQueue
-            playerQueue.add(direction);  // Add to playerQueue
+            String direction = soundQueue.poll();  // Get next direction
+            playerQueue.add(direction);  // Add to expected answers
 
-            // Now, play the direction sound
             playDirectionSound(direction);
 
-            // Record the start time for reaction time calculation
+            // Start reaction time tracking
             startTime = System.currentTimeMillis();
 
-            // Simulate 1-second interval
-            handler.postDelayed(this::playNextDirection, 1000);
+            // Play next direction after the set delay
+            handler.postDelayed(this::playNextDirection, audioDelay);
         } else {
-            // All 10 directions have been played, show results
             showGameResults(true);
         }
     }
@@ -94,13 +110,13 @@ public class AudioGameActivity extends AppCompatActivity {
     private int getSoundResourceForDirection(String direction) {
         switch (direction) {
             case "TOP":
-                return R.raw.up;  // top_direction.mp3 placed in res/raw
+                return R.raw.up;
             case "LEFT":
-                return R.raw.left;  // left_direction.mp3 placed in res/raw
+                return R.raw.left;
             case "RIGHT":
-                return R.raw.right;  // right_direction.mp3 placed in res/raw
+                return R.raw.right;
             case "BOTTOM":
-                return R.raw.down;  // bottom_direction.mp3 placed in res/raw
+                return R.raw.down;
             default:
                 return 0;
         }
@@ -108,20 +124,17 @@ public class AudioGameActivity extends AppCompatActivity {
 
     private void checkAnswer(String userAnswer) {
         if (!playerQueue.isEmpty()) {
-            String expectedDirection = playerQueue.poll();  // Get and remove the direction from the player's queue
-
-            // Calculate the reaction time for each correct answer
+            String expectedDirection = playerQueue.poll();
             long reactionTime = System.currentTimeMillis() - startTime;
 
             if (userAnswer.equals(expectedDirection)) {
                 correctAnswers++;
                 totalReactionTime += reactionTime;
-                missedDirections = 0; // Reset missed directions count
+                missedDirections = 0; // Reset missed count
             } else {
                 missedDirections++;
             }
 
-            // Check if game is over due to missed directions
             if (missedDirections >= MAX_MISSED) {
                 showGameResults(false);
             }
@@ -129,21 +142,16 @@ public class AudioGameActivity extends AppCompatActivity {
     }
 
     private void showGameResults(boolean isSuccess) {
-        // Calculate average reaction time
-        long averageReactionTime = (correctAnswers > 0) ? totalReactionTime / correctAnswers : 0;
+        long avgReactionTime = (correctAnswers > 0) ? totalReactionTime / correctAnswers : 0;
         String resultMessage = isSuccess
-                ? "You finished the game with " + correctAnswers + "/10 correct answers!\nAverage Reaction Time: " + averageReactionTime + " ms"
+                ? "You finished with " + correctAnswers + "/10 correct answers!\nAverage Reaction Time: " + avgReactionTime + " ms"
                 : "Game Over due to too many mistakes!";
 
-        // Show results in a dialog box
         new AlertDialog.Builder(this)
                 .setTitle(isSuccess ? "Game Over - Success" : "Game Over")
                 .setMessage(resultMessage)
-                .setPositiveButton("OK", (dialog, which) -> {
-                    // Ask the user whether they want to restart or go back to the home screen
-                    showRestartDialog();
-                })
-                .setCancelable(false)  // Make sure the dialog is not dismissable by tapping outside
+                .setPositiveButton("OK", (dialog, which) -> showRestartDialog())
+                .setCancelable(false)
                 .show();
     }
 
@@ -152,7 +160,7 @@ public class AudioGameActivity extends AppCompatActivity {
                 .setTitle("Game Over")
                 .setMessage("Would you like to play again or go back to the home screen?")
                 .setPositiveButton("Play Again", (dialog, which) -> restartGame())
-                .setNegativeButton("Go to Home", (dialog, which) -> finish())  // Close the game
+                .setNegativeButton("Go to Home", (dialog, which) -> finish())
                 .setCancelable(false)
                 .show();
     }
