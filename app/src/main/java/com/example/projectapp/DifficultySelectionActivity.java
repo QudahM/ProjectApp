@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.projectapp.GameLogic.AudioGameActivity;
+//import com.example.projectapp.AudioGameActivity;
 
 public class DifficultySelectionActivity extends AppCompatActivity {
 
@@ -35,7 +34,7 @@ public class DifficultySelectionActivity extends AppCompatActivity {
 
         if (gameMode == 1) {
             // If gameMode is 1, start AudioGameActivity
-            intent = new Intent(DifficultySelectionActivity.this, AudioGameActivity.class);
+            intent = new Intent(DifficultySelectionActivity.this, SoundTestActivity.class);
         } else {
             // Otherwise, start SightTestActivity
             intent = new Intent(DifficultySelectionActivity.this, SightTestActivity.class);

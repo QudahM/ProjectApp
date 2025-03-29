@@ -54,7 +54,6 @@ public class SightTestActivity extends AppCompatActivity {
         helper=new gamehelper(this);
     }
     public void setdiff(int levels){
-
         switch (levels) {
             case 1:
                 level=1;
@@ -125,13 +124,11 @@ public class SightTestActivity extends AppCompatActivity {
                 leveltext.setText("Level: "+level);
                 score.setText("Score: "+correctAnswers+"/"+counterscore);
                 if (level>3){
-
                     helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,this::startGame);
                     level =3;
                     correctAnswers = 0;
                     leveltext.setText("Level: "+level);
                     score.setText("Score: "+correctAnswers);
-
                 }else{
                     handler.postDelayed(() -> startGame(), 1000);
                 }

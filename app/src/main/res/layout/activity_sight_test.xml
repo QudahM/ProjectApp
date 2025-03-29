@@ -65,7 +65,7 @@
         android:id="@+id/btn_top"
         android:layout_width="120dp"
         android:layout_height="60dp"
-        android:text="TOP"
+        android:text="UP"
         android:textSize="18sp"
         android:backgroundTint="@color/teal_700"
         android:textColor="#FFFFFF"
@@ -112,13 +112,14 @@
         android:id="@+id/btn_bottom"
         android:layout_width="120dp"
         android:layout_height="60dp"
-        android:text="BOTTOM"
+        android:text="DOWN"
         android:textSize="18sp"
         android:backgroundTint="@color/teal_700"
         android:textColor="#FFFFFF"
         android:layout_below="@id/directionImage"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp" />
+
     <TextView
         android:id="@+id/resultText"
         android:layout_width="wrap_content"
