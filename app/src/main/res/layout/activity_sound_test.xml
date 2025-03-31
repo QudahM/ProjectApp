@@ -74,7 +74,7 @@
     <!-- Left Button -->
     <Button
         android:id="@+id/btn_left"
-        android:layout_width="match_parent"
+        android:layout_width="120dp"
         android:layout_height="60dp"
         android:text="LEFT"
         android:textSize="18sp"
@@ -87,7 +87,7 @@
     <!-- Right Button -->
     <Button
         android:id="@+id/btn_right"
-        android:layout_width="match_parent"
+        android:layout_width="120dp"
         android:layout_height="60dp"
         android:text="RIGHT"
         android:textSize="18sp"

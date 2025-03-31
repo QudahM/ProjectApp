@@ -24,7 +24,7 @@ public class SoundTestActivity extends AppCompatActivity {
     private Random random = new Random();
     private Handler handler;
     private String currentDirection = "";
-    private long startTime;
+    private long startTime,fulltime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class SoundTestActivity extends AppCompatActivity {
         score = findViewById(R.id.text_score_label);
         resultText = findViewById(R.id.resultText);
         handler = new Handler(getMainLooper());
-
+        fulltime=System.currentTimeMillis();
         correctAnswers = 0;
         score.setText("Score: " + correctAnswers + "/" + counterscore);
         resultText.setText("Reaction Time: - ms");
@@ -91,7 +91,8 @@ public class SoundTestActivity extends AppCompatActivity {
             startTime = System.currentTimeMillis();
             playDirectionSound(currentDirection);
         } else {
-            helper.showGameResults(true, counter, questionsasnwered, totalReactionTime, this::startGame);
+
+            helper.showGameResults(true, counter, questionsasnwered, totalReactionTime,fulltime, this::startGame);
         }
     }
 
@@ -148,7 +149,8 @@ public class SoundTestActivity extends AppCompatActivity {
                 correctAnswers = 0;
                 leveltext.setText("Level: " + level);
                 score.setText("Score: " + correctAnswers + "/" + counterscore);
-                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime, this::startGame);
+
+                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,fulltime, this::startGame);
             } else {
                 handler.postDelayed(this::playNextDirection, delay);
             }

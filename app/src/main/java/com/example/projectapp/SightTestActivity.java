@@ -17,7 +17,7 @@ public class SightTestActivity extends AppCompatActivity {
     private Button leftButton, rightButton, upButton, downButton;
     private TextView leveltext,score,resultText;
     private ImageView directionImage;
-    private long startTime,endTime;
+    private long startTime,fulltime;
     private gamehelper helper;
     private int correctAnswers,counter,counterscore,missedDirections,level,questionsasnwered;;
     private long totalReactionTime,delay;
@@ -40,7 +40,7 @@ public class SightTestActivity extends AppCompatActivity {
         score=findViewById(R.id.text_score_label);
         resultText=findViewById(R.id.resultText);
         handler = new Handler(getMainLooper());
-
+        fulltime=System.currentTimeMillis();
         leveltext.setText("Level: "+level);
         correctAnswers=0;
         score.setText("Score: "+correctAnswers+"/"+counterscore);
@@ -119,12 +119,11 @@ public class SightTestActivity extends AppCompatActivity {
             counter++;
             resultText.setText("Reaction Time: " + formattedTime + " seconds");
             if (counterscore >= 5) {
-                level++;
                 counterscore=0;
                 correctAnswers = 0;
                 leveltext.setText("Level: "+level);
                 score.setText("Score: "+correctAnswers+"/"+counterscore);
-                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime, this::startGame);
+                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,fulltime, this::startGame);
             }else{
                 handler.postDelayed(() -> startGame(), 1000);
             }
