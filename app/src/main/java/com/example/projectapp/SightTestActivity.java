@@ -129,6 +129,13 @@ public class SightTestActivity extends AppCompatActivity {
             }
 
         } else {
+
+            long reactionTime = System.currentTimeMillis() - startTime;
+            totalReactionTime += reactionTime;
+            double seconds = reactionTime / 1000.0;
+            String formattedTime = String.format("%.3f", seconds);
+
+            resultText.setText("Reaction Time: " + formattedTime + " seconds");
             directionImage.setImageResource(R.drawable.cross);
             missedDirections++;
             counterscore++;
