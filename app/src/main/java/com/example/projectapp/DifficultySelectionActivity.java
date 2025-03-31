@@ -42,5 +42,6 @@ public class DifficultySelectionActivity extends AppCompatActivity {
 
         intent.putExtra("difficulty", difficulty); // Pass difficulty level
         startActivity(intent);
+        finish();
     }
 }

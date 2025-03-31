@@ -29,9 +29,9 @@ public class gamehelper {
     private void showRestartDialog(Runnable restartCallback) {
         new AlertDialog.Builder(activity)
                 .setTitle("Game Over")
-                .setMessage("Would you like to play again or go back to the home screen?")
+                .setMessage("Would you like to play again or go choose a new Test or level?")
                 .setPositiveButton("Play Again", (dialog, which) -> restartCallback.run())
-                .setNegativeButton("Go to Home", (dialog, which) -> activity.finish())
+                .setNegativeButton("Choose Another Test", (dialog, which) -> activity.finish())
                 .setCancelable(false)
                 .show();
     }

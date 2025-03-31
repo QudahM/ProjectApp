@@ -113,7 +113,6 @@ public class SightTestActivity extends AppCompatActivity {
             counterscore++;
             missedDirections = 0;
             score.setText("Score: "+correctAnswers+"/"+counterscore);
-
             double seconds = reactionTime / 1000.0;
             String formattedTime = String.format("%.3f", seconds);
             counter++;
@@ -129,7 +128,15 @@ public class SightTestActivity extends AppCompatActivity {
             }
 
         } else {
-
+            if (counterscore >= 5) {
+                counterscore=0;
+                correctAnswers = 0;
+                leveltext.setText("Level: "+level);
+                score.setText("Score: "+correctAnswers+"/"+counterscore);
+                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,fulltime, this::startGame);
+            }else{
+                handler.postDelayed(() -> startGame(), 1000);
+            }
             long reactionTime = System.currentTimeMillis() - startTime;
             totalReactionTime += reactionTime;
             double seconds = reactionTime / 1000.0;
