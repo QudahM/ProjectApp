@@ -1,4 +1,5 @@
 package com.example.projectapp;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -123,26 +124,9 @@ public class SightTestActivity extends AppCompatActivity {
                 correctAnswers = 0;
                 leveltext.setText("Level: "+level);
                 score.setText("Score: "+correctAnswers+"/"+counterscore);
-                if (level>3){
-                    helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,this::startGame);
-                    level =3;
-                    correctAnswers = 0;
-                    leveltext.setText("Level: "+level);
-                    score.setText("Score: "+correctAnswers);
-                }else{
-                    handler.postDelayed(() -> startGame(), 1000);
-                }
-
-            }
-            if (level>3){
-                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,this::startGame);
-                correctAnswers = 0;
-                leveltext.setText("Level: "+level);
-                score.setText("Score: "+correctAnswers);
-
+                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime, this::startGame);
             }else{
                 handler.postDelayed(() -> startGame(), 1000);
-
             }
 
         } else {
