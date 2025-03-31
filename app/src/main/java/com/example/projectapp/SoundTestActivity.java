@@ -42,16 +42,13 @@ public class SoundTestActivity extends AppCompatActivity {
         correctAnswers = 0;
         score.setText("Score: " + correctAnswers + "/" + counterscore);
         resultText.setText("Reaction Time: - ms");
-
         int difficulty = getIntent().getIntExtra("difficulty", 1);
         setdiff(difficulty);
         startGame();
-
         upButton.setOnClickListener(v -> checkAnswer("UP"));
         leftButton.setOnClickListener(v -> checkAnswer("LEFT"));
         rightButton.setOnClickListener(v -> checkAnswer("RIGHT"));
         downButton.setOnClickListener(v -> checkAnswer("DOWN"));
-
         helper = new gamehelper(this);
     }
 
@@ -98,6 +95,30 @@ public class SoundTestActivity extends AppCompatActivity {
         }
     }
 
+    private void playDirectionSound(String direction) {
+        int soundResId = getSoundResourceForDirection(direction);
+        if (soundResId != 0) {
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, soundResId);
+            mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(MediaPlayer::release);
+        }
+    }
+
+    private int getSoundResourceForDirection(String direction) {
+        switch (direction) {
+            case "UP":
+                return R.raw.up;
+            case "LEFT":
+                return R.raw.left;
+            case "RIGHT":
+                return R.raw.right;
+            case "DOWN":
+                return R.raw.down;
+            default:
+                return 0;
+        }
+    }
+
     private void checkAnswer(String userAnswer) {
         if (!playerQueue.isEmpty()) {
             String expectedDirection = playerQueue.poll();
@@ -127,44 +148,10 @@ public class SoundTestActivity extends AppCompatActivity {
                 correctAnswers = 0;
                 leveltext.setText("Level: " + level);
                 score.setText("Score: " + correctAnswers + "/" + counterscore);
-                if (level > 3) {
-                    helper.showGameResults(true, counter, questionsasnwered, totalReactionTime, this::startGame);
-                    level = 3;
-                    correctAnswers = 0;
-                    leveltext.setText("Level: " + level);
-                    score.setText("Score: " + correctAnswers);
-                } else {
-                    handler.postDelayed(this::playNextDirection, delay);
-                }
-            } else if (missedDirections >= 10) {
-                helper.showGameResults(false, counter, questionsasnwered, totalReactionTime, this::startGame);
+                helper.showGameResults(true,counter,questionsasnwered,totalReactionTime, this::startGame);
             } else {
                 handler.postDelayed(this::playNextDirection, delay);
             }
-        }
-    }
-
-    private void playDirectionSound(String direction) {
-        int soundResId = getSoundResourceForDirection(direction);
-        if (soundResId != 0) {
-            MediaPlayer mediaPlayer = MediaPlayer.create(this, soundResId);
-            mediaPlayer.start();
-            mediaPlayer.setOnCompletionListener(MediaPlayer::release);
-        }
-    }
-
-    private int getSoundResourceForDirection(String direction) {
-        switch (direction) {
-            case "UP":
-                return R.raw.up;
-            case "LEFT":
-                return R.raw.left;
-            case "RIGHT":
-                return R.raw.right;
-            case "DOWN":
-                return R.raw.down;
-            default:
-                return 0;
         }
     }
 }
