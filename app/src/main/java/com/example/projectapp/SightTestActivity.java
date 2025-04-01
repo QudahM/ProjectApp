@@ -23,7 +23,7 @@ public class SightTestActivity extends AppCompatActivity {
     private long startTime,fulltime,starter;
     private gamehelper helper;
     private int correctAnswers,counter,counterscore,missedDirections,level,questionsasnwered;;
-    private long totalReactionTime,delay;
+    private long totalReactionTime=0,delay;
 
     private final String[] directions = {"UP", "LEFT", "RIGHT", "DOWN"};
     private String currentDirection = "";
@@ -43,7 +43,7 @@ public class SightTestActivity extends AppCompatActivity {
         score=findViewById(R.id.text_score_label);
         resultText=findViewById(R.id.resultText);
         handler = new Handler(getMainLooper());
-        fulltime=System.currentTimeMillis();
+
         leveltext.setText("Level: "+level);
         correctAnswers=0;
         score.setText("Score: "+correctAnswers+"/"+counterscore);
@@ -64,7 +64,7 @@ public class SightTestActivity extends AppCompatActivity {
                 .setMessage("In this game, you will receive visual cues. Press the corresponding button when you see the arrow.")
                 .setCancelable(false)
                 .setPositiveButton("Start Game", (dialog, id) -> {
-
+                    starter=SystemClock.elapsedRealtime();
                     startGame();
                 });
 
@@ -140,7 +140,7 @@ public class SightTestActivity extends AppCompatActivity {
                 correctAnswers = 0;
                 leveltext.setText("Level: "+level);
                 score.setText("Score: "+correctAnswers+"/"+counterscore);
-
+                fulltime = SystemClock.elapsedRealtime()-starter;
                 helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,fulltime, this::startGame);
             }else{
                 handler.postDelayed(() -> startGame(), 1000);
@@ -152,13 +152,13 @@ public class SightTestActivity extends AppCompatActivity {
                 correctAnswers = 0;
                 leveltext.setText("Level: "+level);
                 score.setText("Score: "+correctAnswers+"/"+counterscore);
+                fulltime = SystemClock.elapsedRealtime()-starter;
                 helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,fulltime, this::startGame);
             }else{
                 handler.postDelayed(() -> startGame(), 1000);
             }
             long reactionTime = SystemClock.elapsedRealtime()  - startTime;
             totalReactionTime += reactionTime;
-
             resultText.setText("Reaction Time: " + reactionTime + " ms");
             directionImage.setImageResource(R.drawable.cross);
             missedDirections++;
