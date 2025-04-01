@@ -3,11 +3,13 @@ package com.example.projectapp;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.LinkedList;
@@ -58,7 +60,7 @@ public class SoundTestActivity extends AppCompatActivity {
 
         int difficulty = getIntent().getIntExtra("difficulty", 1);
         setdiff(difficulty);
-        startGame();
+        showGameRulesDialog();
 
         // Set button click listeners
         upButton.setOnClickListener(v -> checkAnswer("UP"));
@@ -68,7 +70,17 @@ public class SoundTestActivity extends AppCompatActivity {
 
         helper = new gamehelper(this);
     }
+    private void showGameRulesDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Game Rules")
+                .setMessage("In this game, you will receive sound cues. Press the corresponding button when you hear the sound.")
+                .setCancelable(false)
+                .setPositiveButton("Start Game", (dialog, id) -> {
+                    startGame();
+                });
 
+        builder.create().show();
+    }
     public void setdiff(int levels) {
         switch (levels) {
             case 1:
@@ -106,17 +118,17 @@ public class SoundTestActivity extends AppCompatActivity {
         if (!soundQueue.isEmpty()) {
             currentDirection = soundQueue.poll();
             playerQueue.add(currentDirection);
-            startTime = System.currentTimeMillis(); // Start timing for this direction
+            startTime = SystemClock.elapsedRealtime(); // Start timing for this direction
 
             // Set game start time only when the first sound is played
             if (gameStartTime == 0) {
-                gameStartTime = System.currentTimeMillis(); // Record the start time of the game
+                gameStartTime = SystemClock.elapsedRealtime(); // Record the start time of the game
             }
 
             playDirectionSound(currentDirection);
         } else {
             // Game ends when all directions have been played
-            gameEndTime = System.currentTimeMillis(); // Record the end time of the game
+            gameEndTime = SystemClock.elapsedRealtime(); // Record the end time of the game
             helper.showGameResults(true, counter, questionsasnwered, totalReactionTime, getTotalGameTime(), this::startGame);
         }
     }
@@ -148,7 +160,7 @@ public class SoundTestActivity extends AppCompatActivity {
     private void checkAnswer(String userAnswer) {
         if (!playerQueue.isEmpty()) {
             String expectedDirection = playerQueue.poll();
-            long reactionTime = System.currentTimeMillis() - startTime; // Calculate reaction time after button press
+            long reactionTime = SystemClock.elapsedRealtime() - startTime; // Calculate reaction time after button press
             questionsasnwered++;
 
             // After a short delay, update the feedback image to either checkmark or cross
@@ -179,7 +191,7 @@ public class SoundTestActivity extends AppCompatActivity {
                     correctAnswers = 0;
                     leveltext.setText("Level: " + level);
                     score.setText("Score: " + correctAnswers + "/" + counterscore);
-                    gameEndTime = System.currentTimeMillis(); // Record the end time of the game
+                    gameEndTime = SystemClock.elapsedRealtime(); // Record the end time of the game
                     helper.showGameResults(true, counter, questionsasnwered, totalReactionTime, getTotalGameTime(), this::startGame);
                 } else {
                     handler.postDelayed(this::playNextDirection, delay);

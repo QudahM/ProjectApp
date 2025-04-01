@@ -3,10 +3,13 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectapp.R;
@@ -17,7 +20,7 @@ public class SightTestActivity extends AppCompatActivity {
     private Button leftButton, rightButton, upButton, downButton;
     private TextView leveltext,score,resultText;
     private ImageView directionImage;
-    private long startTime,fulltime;
+    private long startTime,fulltime,starter;
     private gamehelper helper;
     private int correctAnswers,counter,counterscore,missedDirections,level,questionsasnwered;;
     private long totalReactionTime,delay;
@@ -47,13 +50,28 @@ public class SightTestActivity extends AppCompatActivity {
         int difficulty = getIntent().getIntExtra("difficulty", 1);
         setdiff(difficulty);
         directionImage.setImageResource(R.drawable.wait);
-        startGame();
+
+        showGameRulesDialog();
         upButton.setOnClickListener(v -> checkAnswer("UP"));
         leftButton.setOnClickListener(v -> checkAnswer("LEFT"));
         rightButton.setOnClickListener(v -> checkAnswer("RIGHT"));
         downButton.setOnClickListener(v -> checkAnswer("DOWN"));
         helper=new gamehelper(this);
     }
+    private void showGameRulesDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Game Rules")
+                .setMessage("In this game, you will receive visual cues. Press the corresponding button when you see the arrow.")
+                .setCancelable(false)
+                .setPositiveButton("Start Game", (dialog, id) -> {
+
+                    startGame();
+                });
+
+        builder.create().show();
+    }
+
+
     public void setdiff(int levels){
         switch (levels) {
             case 1:
@@ -77,9 +95,10 @@ public class SightTestActivity extends AppCompatActivity {
         directionImage.setImageResource(R.drawable.wait);
         handler.postDelayed(() -> {
             currentDirection = directions[random.nextInt(directions.length)];
-            startTime = System.currentTimeMillis();
+
             setdirection(currentDirection);
             directionImage.setVisibility(View.VISIBLE);
+            startTime = SystemClock.elapsedRealtime();
         }, delay);
         directionImage.setImageResource(R.drawable.wait);
     }
@@ -108,7 +127,7 @@ public class SightTestActivity extends AppCompatActivity {
         if (userAnswer.equals(currentDirection)) {
             directionImage.setImageResource(R.drawable.check);
             correctAnswers++;
-            long reactionTime = System.currentTimeMillis() - startTime;
+            long reactionTime = SystemClock.elapsedRealtime() - startTime;
             totalReactionTime += reactionTime;
             counterscore++;
             missedDirections = 0;
@@ -122,6 +141,7 @@ public class SightTestActivity extends AppCompatActivity {
                 correctAnswers = 0;
                 leveltext.setText("Level: "+level);
                 score.setText("Score: "+correctAnswers+"/"+counterscore);
+
                 helper.showGameResults(true,counter,questionsasnwered,totalReactionTime,fulltime, this::startGame);
             }else{
                 handler.postDelayed(() -> startGame(), 1000);
@@ -137,7 +157,7 @@ public class SightTestActivity extends AppCompatActivity {
             }else{
                 handler.postDelayed(() -> startGame(), 1000);
             }
-            long reactionTime = System.currentTimeMillis() - startTime;
+            long reactionTime = SystemClock.elapsedRealtime()  - startTime;
             totalReactionTime += reactionTime;
             double seconds = reactionTime / 1000.0;
             String formattedTime = String.format("%.3f", seconds);

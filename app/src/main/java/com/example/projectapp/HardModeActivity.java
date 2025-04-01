@@ -140,7 +140,7 @@ public class HardModeActivity extends AppCompatActivity {
         long reactionTime = SystemClock.elapsedRealtime() - reactionStartTime; // Time taken for this answer
 
         if (userChoice.equals(currentCorrectDirection)) {
-            // Correct answer: Show check mark
+
             counter++;
             directionImage.setImageResource(R.drawable.check);
             score++;  // Update score
@@ -149,7 +149,7 @@ public class HardModeActivity extends AppCompatActivity {
             scoreCounter.setText("Score: " + score+"/"+counter); // Update score counter
             resultText.setText("Correct! Reaction Time: " + reactionTime + " ms");
         } else {
-            // Incorrect answer: Show cross mark
+
             counter++;
             scoreCounter.setText("Score: " + score+"/"+counter);
             directionImage.setImageResource(R.drawable.cross);
@@ -167,27 +167,35 @@ public class HardModeActivity extends AppCompatActivity {
         // Calculate average reaction time
         long averageReactionTime = reactionCount > 0 ? totalReactionTime / reactionCount : 0;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Game Over")
-                .setMessage("You finished the game!\n\nYour Score: " + score + "/5" +
-                        "\nAverage Reaction Time: " + averageReactionTime + " ms" +
-                        "\nTotal Time Played: " + (totalGameTime / 1000) + " seconds" +
-                        "\n\nWould you like to play again?")
+            String resultMessage = true
+                ? "You finished the game with " + score + "/"+ counter+" correct answers!\nAverage Reaction Time: " + averageReactionTime + " ms \nTotal time taken: "+ (totalGameTime / 1000) + " seconds"
+                : "Game Over due to too many mistakes!";
+
+        new AlertDialog.Builder(this)
+               .setTitle(true ? "Game Over - Success" : "Game Over")
+                .setMessage(resultMessage)
+                .setPositiveButton("OK", (dialog, which) -> showRestartDialog())
                 .setCancelable(false)
-                .setPositiveButton("Play Again", (dialog, id) -> {
+                .show();
+
+    }
+    private void showRestartDialog() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Game Over")
+                .setMessage("Would you like to play again or go choose a new Test or level?")
+                .setPositiveButton("Play Again", (dialog, which) -> {
                     score = 0;
                     cueCount = 0;
                     totalReactionTime = 0;
                     reactionCount = 0;
-                    totalGameTime = 0; // Reset total game time for next game
+                    totalGameTime = 0;
                     scoreCounter.setText(String.valueOf(score));
-                    setupGame();  // Restart the game
+                    setupGame();
                 })
-                .setNegativeButton("Exit", (dialog, id) -> finish());  // Close the activity
-
-        builder.create().show();
+                .setNegativeButton("Choose Another Test", (dialog, which) -> this.finish())
+                .setCancelable(false)
+                .show();
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
