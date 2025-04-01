@@ -38,6 +38,11 @@
             android:name=".DifficultySelectionActivity"
             android:exported="false" />
 
+        <!-- Add the HardModeActivity here -->
+        <activity
+            android:name=".HardModeActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
