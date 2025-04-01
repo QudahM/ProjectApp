@@ -181,9 +181,8 @@ public class SoundTestActivity extends AppCompatActivity {
                 score.setText("Score: " + correctAnswers + "/" + counterscore);
 
                 // Format reaction time to 3 decimal places
-                double seconds = reactionTime / 1000.0;
-                String formattedTime = String.format("%.3f", seconds);
-                resultText.setText("Reaction Time: " + formattedTime + " seconds");
+
+                resultText.setText("Reaction Time: " + reactionTime + " ms");
 
                 if (counterscore >= 5) {
                     level++;

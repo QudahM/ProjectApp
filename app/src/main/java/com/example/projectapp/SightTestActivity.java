@@ -132,10 +132,9 @@ public class SightTestActivity extends AppCompatActivity {
             counterscore++;
             missedDirections = 0;
             score.setText("Score: "+correctAnswers+"/"+counterscore);
-            double seconds = reactionTime / 1000.0;
-            String formattedTime = String.format("%.3f", seconds);
+
             counter++;
-            resultText.setText("Reaction Time: " + formattedTime + " seconds");
+            resultText.setText("Reaction Time: " + reactionTime + " ms");
             if (counterscore >= 5) {
                 counterscore=0;
                 correctAnswers = 0;
@@ -159,10 +158,8 @@ public class SightTestActivity extends AppCompatActivity {
             }
             long reactionTime = SystemClock.elapsedRealtime()  - startTime;
             totalReactionTime += reactionTime;
-            double seconds = reactionTime / 1000.0;
-            String formattedTime = String.format("%.3f", seconds);
 
-            resultText.setText("Reaction Time: " + formattedTime + " seconds");
+            resultText.setText("Reaction Time: " + reactionTime + " ms");
             directionImage.setImageResource(R.drawable.cross);
             missedDirections++;
             counterscore++;
