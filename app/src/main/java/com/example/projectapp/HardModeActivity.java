@@ -20,6 +20,7 @@ public class HardModeActivity extends AppCompatActivity {
     private Button btnUp, btnDown, btnLeft, btnRight;
     private int score = 0;
     private int cueCount = 0;
+    private int counter;
     private String currentCorrectDirection;
     private boolean isSoundMode;
     private MediaPlayer mediaPlayer;
@@ -37,7 +38,7 @@ public class HardModeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hard_mode_test);
 
-        scoreCounter = findViewById(R.id.text_score_counter);
+        scoreCounter = findViewById(R.id.text_score_label);
         resultText = findViewById(R.id.resultText);
         directionImage = findViewById(R.id.directionImage);
         btnUp = findViewById(R.id.btn_top);
@@ -140,14 +141,17 @@ public class HardModeActivity extends AppCompatActivity {
 
         if (userChoice.equals(currentCorrectDirection)) {
             // Correct answer: Show check mark
+            counter++;
             directionImage.setImageResource(R.drawable.check);
             score++;  // Update score
             totalReactionTime += reactionTime;
             reactionCount++;
-            scoreCounter.setText("Score: " + score); // Update score counter
+            scoreCounter.setText("Score: " + score+"/"+counter); // Update score counter
             resultText.setText("Correct! Reaction Time: " + reactionTime + " ms");
         } else {
             // Incorrect answer: Show cross mark
+            counter++;
+            scoreCounter.setText("Score: " + score+"/"+counter);
             directionImage.setImageResource(R.drawable.cross);
             resultText.setText("Wrong! Reaction Time: " + reactionTime + " ms");
         }
